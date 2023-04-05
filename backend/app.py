@@ -13,8 +13,8 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-host = 'http://localhost:5000'  # Địa chỉ server trọng tài
-team_id = 123
+host = 'http://localhost:5000'  # Địa chỉ server trọng tài mặc định
+team_id = 123 # team_id mặc định
 game_info = {}  # Thông tin trò chơi để hiển thị trên giao diện
 stop_thread = False  # Biến dùng để dừng thread lắng nghe
 
@@ -143,8 +143,8 @@ def get_data():
 
 if __name__ == "__main__":
     # Lấy địa chỉ server trọng tài từ người dùng
-    # host = input("Enter server url: ")
-    # team_id = input("Enter team id: ")
+    host = input("Enter server url: ")
+    team_id = input("Enter team id: ")
 
     # Khởi tạo game client
     gameClient = GameClient(host, team_id)
