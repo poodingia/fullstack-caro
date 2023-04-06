@@ -17,6 +17,9 @@ body {
     height: 12vh;
     background-color: #ddd;
     font-size: 1.1rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
 
 
@@ -91,12 +94,33 @@ body {
     font-weight: 1000;
 }
 
-.gameboard-container .gameboard {
+#gameboard-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#gameboard-container .gameboard {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 2vh;
 
+}
+
+#roomid-input-container{
+    width: 100%;
+    text-align: center;
+}
+
+#roomid-input-container input{
+    padding: 0.8%;
+
+}
+
+#roomIdSubmit{
+    padding: 0.8%
 }
 
 .gameboard table {
@@ -112,4 +136,13 @@ body {
 
 .gameboard tr {
     border: 1px solid #aaa;
+}
+
+#status-container {
+    margin-top: 13.5vh;
+}
+
+#status-container h3{
+    width: 100%;
+    text-align: center;
 }
