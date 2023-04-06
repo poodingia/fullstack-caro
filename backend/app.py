@@ -66,7 +66,7 @@ class GameClient:
             # Nhận thông tin trò chơi
             elif data.get("board"):
                 # Nếu là lượt đi của đội của mình thì gửi nước đi
-                if int(data.get("turn")) == int(self.team_id):
+                if data.get("turn") == self.team_id:
                     self.size = int(data.get("size"))
                     self.board = copy.deepcopy(data.get("board"))
                     # Lấy nước đi từ AI, nước đi là một tuple (i, j)
