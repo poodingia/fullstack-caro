@@ -1,7 +1,7 @@
 # Hướng dẫn sử dụng
 <h3>Yêu cầu</h3>
 <ul>
-<li>Cần có Node.js để chạy ứng dụng</li>
+<li>Cần có Node.js v16.16.0 để chạy ứng dụng</li>
 <li>Tải Node.js: <a href="https://nodejs.org/en/download">Link</a></li>
 </ul>
 
