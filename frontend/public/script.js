@@ -3,10 +3,12 @@ const api = 'http://localhost:3005/'
 
 let game = {}
 let roomId = undefined;
+let fetchInterval;
 
 document.getElementById("roomIdSubmit").addEventListener('click', handleSubmitRoomId)
 
 function handleSubmitRoomId(){
+    fetchInterval = setInterval(getJSON, 1000);
     const roomIdInput = document.getElementById("roomIdInput")
     roomId = roomIdInput.value;
 }
@@ -16,15 +18,40 @@ function getJSON() {
         .then(response => response.json())
         .then(response => game = response)
         .catch(err => console.error(err));
-    if(game.room_id===roomId && game.room_id !== undefined){
+
+    if(game.status!= "None" && game.status!=undefined){
+        // End the game
+        document.getElementById("status").style.display = "block";
+        document.getElementsByClassName("gameboard")[0].style.display = "none";
+        document.getElementById("status").innerText = game.status;
+        document.getElementById("confirm-button-container").style.display = "block";
+        document.getElementById("confirm-button").addEventListener("click", handleConfirm);
+        document.getElementById("roomid-input-container").style.display = "none";
+    }
+
+    else if(game.room_id===roomId && game.room_id !== undefined){
         drawBoard();
     } 
+
     render();
 }
 
-setInterval(getJSON, 1000);
+function handleConfirm() {
+    // Clear 
+    game = {}
+    clearInterval(fetchInterval);
+    document.getElementById("status").style.display = "none";
+
+    // Display room ID input
+    document.getElementById("roomIdInput").value = "";
+    document.getElementById("roomid-input-container").style.display="block";
+
+    // Hide confirm button
+    document.getElementById("confirm-button-container").style.display = "none";
+}
 
 function drawBoard() {
+    document.getElementsByClassName("gameboard")[0].style.display = "block";
     document.getElementById("roomid-input-container").style.display="none";
     var size = game.size;
     var gameBoard = document.getElementsByClassName("gameboard");
@@ -52,14 +79,17 @@ function render() {
         document.getElementById('turn-flag-2').style.visibility = "visible"
         document.getElementById('turn-flag-1').style.visibility = "hidden"
     }
-    document.getElementById("match-id").innerText = `Match ID: ${game.match_id}`
-    document.getElementById("player1-id").innerText = game.team1_id != undefined ? game.team1_id : "ID1"
-    document.getElementById("player2-id").innerText = game.team2_id != undefined ? game.team2_id : "ID2"
-    document.getElementById('player1-time').innerHTML = game.time1
-    document.getElementById('player2-time').innerHTML = game.time2
-    document.getElementById('score1').innerHTML = game.score1
-    document.getElementById('score2').innerHTML = game.score2
-    document.getElementById('status').innerText = game.status == "None" ? "" : game.status
+    else if (game.turn == undefined){
+        document.getElementById('turn-flag-2').style.visibility = "hidden"
+        document.getElementById('turn-flag-1').style.visibility = "hidden"
+    }
+    document.getElementById("match-id").innerText = `Match ID: ${game.match_id != undefined ? game.match_id : ""}`
+    document.getElementById("player1-id").innerText = game.team1_id != undefined ? game.team1_id : ""
+    document.getElementById("player2-id").innerText = game.team2_id != undefined ? game.team2_id : ""
+    document.getElementById('player1-time').innerHTML = game.time1 != undefined ? game.time1 : ""
+    document.getElementById('player2-time').innerHTML = game.time2 != undefined ? game.time2 : ""
+    document.getElementById('score1').innerHTML = game.score1 != undefined ? game.score1 : ""
+    document.getElementById('score2').innerHTML = game.score2 != undefined ? game.score2 : ""
 
 }
 
