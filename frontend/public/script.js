@@ -1,5 +1,5 @@
 //TODO: Assign link of API here:
-const api = 'http://localhost:3005/'
+const api = 'http://localhost:3002/'
 
 let game = {}
 let roomId = undefined;
@@ -83,9 +83,44 @@ function render() {
         document.getElementById('turn-flag-2').style.visibility = "hidden"
         document.getElementById('turn-flag-1').style.visibility = "hidden"
     }
+    if (game.team1_id != undefined){
+        let team1Parsed = game.team1_id.split("+");
+        let teamId1 = team1Parsed[0].trim();
+        let teamRole1 = team1Parsed[1].trim().toLowerCase();
+        let avatarImg1 = document.querySelector(".player1-avatar img");
+        if(teamRole1 == "x" || teamRole1 == "o"){
+            avatarImg1.src = "resources/" + teamRole1 + "_role.png";
+        }
+        else {
+            avatarImg1.src = "resources/player1avatar.png";
+        }
+        document.getElementById("player1-id").innerText = teamId1;
+    }
+    else {
+        document.getElementById("player1-id").innerText = "";
+        let avatarImg1 = document.querySelector(".player1-avatar img");
+        avatarImg1.src = "resources/player1avatar.png";
+    }
+
+    if (game.team2_id != undefined){
+        let team2Parsed = game.team2_id.split("+");
+        let teamId2 = team2Parsed[0].trim();
+        let teamRole2 = team2Parsed[1].trim().toLowerCase();
+        let avatarImg2 = document.querySelector(".player2-avatar img");
+        if(teamRole2 == "x" || teamRole2 == "o"){
+            avatarImg2.src = "resources/" + teamRole2 + "_role.png";
+        }
+        else {
+            avatarImg2.src = "resources/player2avatar.png";
+        }
+        document.getElementById("player2-id").innerText = teamId2;
+      }
+      else {
+        document.getElementById("player2-id").innerText = "";
+        let avatarImg2 = document.querySelector(".player2-avatar img");
+        avatarImg2.src = "resources/player2avatar.png";
+      }
     document.getElementById("match-id").innerText = `Match ID: ${game.match_id != undefined ? game.match_id : ""}`
-    document.getElementById("player1-id").innerText = game.team1_id != undefined ? game.team1_id : ""
-    document.getElementById("player2-id").innerText = game.team2_id != undefined ? game.team2_id : ""
     document.getElementById('player1-time').innerHTML = game.time1 != undefined ? game.time1 : ""
     document.getElementById('player2-time').innerHTML = game.time2 != undefined ? game.time2 : ""
     document.getElementById('score1').innerHTML = game.score1 != undefined ? game.score1 : ""

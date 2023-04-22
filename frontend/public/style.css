@@ -56,12 +56,14 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex: 1;
 }
 
 .player2 {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     align-items: center;
+    flex: 1;
 }
 
 #player1-info {
@@ -77,16 +79,6 @@ body {
 .player2-avatar img {
     width: 50px;
     height: 50px;
-}
-
-.player1-time {
-    color: white;
-    background-color: rgb(6, 144, 154);
-}
-
-.player2-time {
-    color: white;
-    background-color: #DBA078;
 }
 
 #player1-id,
