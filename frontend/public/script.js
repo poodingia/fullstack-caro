@@ -60,7 +60,7 @@ function drawBoard() {
         gameBoardHTML += "<tr>"
         for (var j = 0; j < size; j++) {
             gameBoardHTML += `<td style='width:${600 / size}px; height:${600 / size}px; font-size:${400 / size}px; font-weight: 300'>`
-                + game.board[size * i + j]
+                + game.board[i][j]
                 + "</td>"
         }
         gameBoardHTML += "</tr>";
