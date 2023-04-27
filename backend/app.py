@@ -24,9 +24,10 @@ ai = TicTacToeAI('X')  # Khởi tạo AI chạy mặc định với đội X
 # Giao tiếp với trọng tài qua API:
 # nghe trọng tài trả về thông tin hiển thị ở '/', gửi yêu cầu khởi tại qua '/init/' và gửi nước đi qua '/move'
 class GameClient:
-    def __init__(self, server_url, your_team_id):
+    def __init__(self, server_url, your_team_id, your_team_roles):
         self.server_url = server_url
-        self.team_id = your_team_id
+        self.team_id = f'{your_team_id}+{your_team_roles}'
+        self.team_roles = your_team_roles
         self.match_id = None
         self.board = None
         self.init = None
@@ -66,7 +67,7 @@ class GameClient:
             # Nhận thông tin trò chơi
             elif data.get("board"):
                 # Nếu là lượt đi của đội của mình thì gửi nước đi
-                if data.get("turn") == self.team_id:
+                if data.get("turn") in self.team_id:
                     self.size = int(data.get("size"))
                     self.board = copy.deepcopy(data.get("board"))
                     # Lấy nước đi từ AI, nước đi là một tuple (i, j)
@@ -76,7 +77,7 @@ class GameClient:
                     valid_move = self.check_valid_move(move)
                     # Nếu hợp lệ thì gửi nước đi
                     if valid_move:
-                        self.board[int(move[0]) * self.size + int(move[1])][0] = "X"
+                        self.board[int(move[0])][int(move[1])] = self.team_roles
                         self.send_move()
                     else:
                         print("Invalid move")
@@ -127,7 +128,7 @@ class GameClient:
         if new_move_pos is None:
             return False
         i, j = int(new_move_pos[0]), int(new_move_pos[1])
-        if self.board[i * self.size + j][0] == " ":
+        if self.board[i][j] == " ":
             return True
         return False
 
@@ -145,9 +146,9 @@ if __name__ == "__main__":
     # Lấy địa chỉ server trọng tài từ người dùng
     host = input("Enter server url: ")
     team_id = input("Enter team id: ")
-
+    team_roles = input("Enter team roles: ").upper()
     # Khởi tạo game client
-    gameClient = GameClient(host, team_id)
+    gameClient = GameClient(host, team_id, team_roles)
     game_thread = Thread(target=gameClient.listen)
     game_thread.start()
     app.run(host="0.0.0.0", port=3005)

@@ -1,3 +1,4 @@
+import copy
 import random
 
 
@@ -8,15 +9,11 @@ class TicTacToeAI:
     def get_move(self, board, size):
         # Find all available positions on the board
         size = int(size)
-        new_board = [[' ' for i in range(size)] for j in range(size)]
-        for i in range(size):
-            for j in range(size):
-                new_board[i][j] = board[i * size + j][0]
-        print(new_board)
+        print(board)
         available_moves = []
         for i in range(size):
             for j in range(size):
-                if new_board[i][j] == ' ':
+                if board[i][j] == ' ':
                     available_moves.append((i, j))
         print(available_moves)
 
