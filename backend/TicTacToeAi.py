@@ -9,14 +9,12 @@ class TicTacToeAI:
     def get_move(self, board, size):
         # Find all available positions on the board
         size = int(size)
-        print(board)
         available_moves = []
         for i in range(size):
             for j in range(size):
                 if board[i][j] == ' ':
                     available_moves.append((i, j))
-        print(available_moves)
-
+                    
         # If there are no available moves, return None
         if not available_moves:
             return None

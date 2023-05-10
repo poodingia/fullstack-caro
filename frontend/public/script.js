@@ -1,5 +1,5 @@
 //TODO: Assign link of API here:
-const api = 'http://localhost:3002/'
+const api = 'http://localhost:1724/'
 
 let game = {}
 let roomId = undefined;

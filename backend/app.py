@@ -41,7 +41,7 @@ class GameClient:
         while not stop_thread:
             # Thời gian lắng nghe giữa các lần
             time.sleep(3)
-            print(self.init)
+            print(f'Init: {self.init}')
 
             # Nếu chưa kết nối thì gửi yêu cầu kết nối
             if not self.init:
@@ -56,8 +56,8 @@ class GameClient:
 
             # Nếu chưa có id phòng thì tiếp tục gửi yêu cầu
             if data.get("room_id") is None:
+                print(data)
                 continue
-            print(data)
             # Khởi tạo trò chơi
             if data.get("init"):
                 print("Connection established")
@@ -66,7 +66,8 @@ class GameClient:
 
             # Nhận thông tin trò chơi
             elif data.get("board"):
-                # Nếu là lượt đi của đội của mình thì gửi nước đi
+                # Nếu là lượt đi của đội của mình thì gửi nước đi             
+                log_game_info(game_info=game_info)
                 if data.get("turn") in self.team_id:
                     self.size = int(data.get("size"))
                     self.board = copy.deepcopy(data.get("board"))
@@ -78,6 +79,7 @@ class GameClient:
                     # Nếu hợp lệ thì gửi nước đi
                     if valid_move:
                         self.board[int(move[0])][int(move[1])] = self.team_roles
+                        game_info["board"] = self.board
                         self.send_move()
                     else:
                         print("Invalid move")
@@ -94,13 +96,8 @@ class GameClient:
 
     def send_move(self):
         # Gửi nước đi đến server trọng tài
-        move_info = {
-            "room_id": self.room_id,
-            "match_id": self.match_id,
-            "board": self.board
-        }
         headers = {"Content-Type": "application/json"}
-        requests.post(self.server_url + "/move", json=move_info, headers=headers)
+        requests.post(self.server_url + "/move", json=game_info, headers=headers)
 
     def send_init(self):
         # Gửi yêu cầu kết nối đến server trọng tài
@@ -131,6 +128,21 @@ class GameClient:
         if self.board[i][j] == " ":
             return True
         return False
+
+def log_game_info(game_info):
+    # Ghi thông tin trò chơi vào file log
+    print("Match id: ", game_info["match_id"])
+    print("Room id: ", game_info["room_id"])
+    print("Turn: ", game_info["turn"])
+    print("Status: ", game_info["status"])
+    print("Size: ", game_info["size"])
+    print("Board: ")
+    for i in range(int(game_info["size"])):
+        for j in range(int(game_info["size"])):
+            print(f'{game_info["board"][i][j]},', end=" ")
+        print()
+    print("team1_id:", game_info["team1_id"])
+    print("team2_id:", game_info["team2_id"])
 
 
 # API trả về thông tin trò chơi cho frontend
