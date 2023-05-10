@@ -4,4 +4,4 @@
 2. Chạy `python app.py` để chạy trọng tài
 3. Lấy địa chỉ trọng tài và các thông tin như sau để chạy Backend:
 
-    ![image](res\global_var.png)
+    ![image](res/global_var.png)
