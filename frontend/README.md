@@ -13,7 +13,7 @@
 <img src="public/resources/jsonguide.png"></img>
 <li>Sử dụng terminal, cd đến thư mục <i>frontend</i> và chạy: <pre>npm install</pre>
 <li>Sau khi install xong thư mục node_modules, chạy: <pre>npm start</pre>
-<li>Script sẽ fetch JSON từ API cung cấp bởi Backend và re-render trang web mỗi 1 giây</li>
+<li>Nhập room_id, nếu khớp với room_id từ BE, script sẽ fetch JSON từ API và re-render trang web mỗi 1 giây</li>
 </ol>
 
 <h3>Các thành phần của giao diện</h3>
