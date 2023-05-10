@@ -158,7 +158,7 @@ if __name__ == "__main__":
     # Lấy địa chỉ server trọng tài từ người dùng
     host = input("Enter server url: ")
     team_id = input("Enter team id: ")
-    team_roles = input("Enter team roles: ").upper()
+    team_roles = input("Enter team role (x/o): ").lower()
     # Khởi tạo game client
     gameClient = GameClient(host, team_id, team_roles)
     game_thread = Thread(target=gameClient.listen)

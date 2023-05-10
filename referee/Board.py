@@ -1,5 +1,5 @@
 class BoardGame:
-    def  __init__(self, size, room_id, match_id, team1_id="xx1", team2_id="xx2"):
+    def  __init__(self, size, room_id, match_id, team1_id="xx1+x", team2_id="xx2+o"):
         self.size = size
         self.status = None
         self.team1_time = 0

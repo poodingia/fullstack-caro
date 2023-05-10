@@ -11,11 +11,16 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 PORT=1724
 team1_id = "xx1"
 team2_id = "xx2"
+team1_role = "x"
+team2_role = "o"
 room_id = "123"
 match_id = "321"
 size = 5
+#################
 
-board_game = BoardGame(size, room_id, match_id, team1_id, team2_id)
+team1_id_full = team1_id + "+" + team1_role
+team2_id_full = team2_id + "+" + team2_role
+board_game = BoardGame(size, room_id, match_id, team1_id_full, team2_id_full)
 
 @app.route('/init', methods=['POST'])
 @cross_origin()
@@ -60,10 +65,10 @@ def handle_move():
     print("Move", data)
     if data["turn"] == board_game.game_info["turn"]:
         board_game.game_info.update(data)
-        if data["turn"] == team1_id:
-            board_game.game_info["turn"] = team2_id
+        if data["turn"] == team1_id_full:
+            board_game.game_info["turn"] = team2_id_full
         else:
-            board_game.game_info["turn"] = team1_id
+            board_game.game_info["turn"] = team1_id_full
     print(board_game.game_info)
 
     board_game.convert_board(board_game.game_info["board"])
