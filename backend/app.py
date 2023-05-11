@@ -2,6 +2,7 @@ import copy
 import json
 import time
 from threading import Thread
+import socket
 
 import requests
 from flask import Flask, jsonify, make_response, request
@@ -141,6 +142,8 @@ def log_game_info(game_info):
         for j in range(int(game_info["size"])):
             print(f'{game_info["board"][i][j]},', end=" ")
         print()
+    print("time1: ", game_info["time1"])
+    print("time2: ", game_info["time2"])
     print("team1_id:", game_info["team1_id"])
     print("team2_id:", game_info["team2_id"])
 
@@ -161,13 +164,14 @@ if __name__ == "__main__":
     team_roles = input("Enter team role (x/o): ").lower()
     # Khởi tạo game client
     gameClient = GameClient(host, team_id, team_roles)
-    game_thread = Thread(target=gameClient.listen)
-    game_thread.start()
-    app.run(host="0.0.0.0", port=3005)
-    try:
-        while game_thread.is_alive():
-            game_thread.join(1)
-    except KeyboardInterrupt:
-        stop_thread = True
-        game_thread.join()
-        print("Game client stopped")
+    gameClient.listen()
+    # game_thread = Thread(target=gameClient.listen)
+    # game_thread.start()
+    # app.run(host="0.0.0.0", port=3005)
+    # try:
+    #     while game_thread.is_alive():
+    #         game_thread.join(1)
+    # except KeyboardInterrupt:
+    #     stop_thread = True
+    #     game_thread.join()
+    #     print("Game client stopped")
