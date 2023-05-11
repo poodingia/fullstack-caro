@@ -1,12 +1,12 @@
 class BoardGame:
-    def  __init__(self, size, room_id, match_id, team1_id="xx1+x", team2_id="xx2+o"):
+    def  __init__(self, size,  board,room_id, match_id, team1_id="xx1+x", team2_id="xx2+o"):
         self.size = size
         self.status = None
         self.team1_time = 0
         self.team2_time = 0
         self.score1 = 0
         self.score2 = 0
-        self.board = self.init_board()
+        self.board = board
         self.game_info = {
             "room_id": room_id,
             "match_id": match_id,
@@ -25,7 +25,7 @@ class BoardGame:
     def init_board(self):
         board = []
         for i in range(self.size):
-            board.append([' '])
+            board.append([])
             for j in range(self.size):
                 board[i].append(' ')
         return board
@@ -35,7 +35,7 @@ class BoardGame:
         for i in range(self.size*self.size):
             if board[i] == " ":
                 flag = False
-        
+
         if flag:
             self.status = "Draw"
             self.game_info["status"] = self.status

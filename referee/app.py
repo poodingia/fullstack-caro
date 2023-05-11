@@ -15,12 +15,19 @@ team1_role = "x"
 team2_role = "o"
 room_id = "123"
 match_id = "321"
-size = 5
+size = 7
 #################
+
+board = []
+for i in range(size):
+    board.append([])
+    for j in range(size):
+        board[i].append(' ')
+
 
 team1_id_full = team1_id + "+" + team1_role
 team2_id_full = team2_id + "+" + team2_role
-board_game = BoardGame(size, room_id, match_id, team1_id_full, team2_id_full)
+board_game = BoardGame(size, board, room_id, match_id, team1_id_full, team2_id_full)
 
 @app.route('/init', methods=['POST'])
 @cross_origin()
@@ -41,6 +48,7 @@ def get_data():
 @app.route('/', methods=['POST'])
 @cross_origin()
 def render_board():
+    print(f'Board: {board_game.game_info["board"]}')
     response = make_response(jsonify(board_game.game_info))
     # print("Render: ", game_info)
     return board_game.game_info
@@ -62,7 +70,7 @@ def handle_move():
     team_1_time = 0
     team_2_time = 0
     data = json.loads(data.decode('utf-8'))
-    print("Move", data)
+    print(f'Board: {board_game.board}')
     if data["turn"] == board_game.game_info["turn"]:
         board_game.game_info.update(data)
         if data["turn"] == team1_id_full:
@@ -71,10 +79,11 @@ def handle_move():
             board_game.game_info["turn"] = team1_id_full
     print(board_game.game_info)
 
-    board_game.convert_board(board_game.game_info["board"])
+    # board_game.convert_board(board_game.game_info["board"])
     
     return 'ok'
 
 
 if __name__=="__main__":
+    print(board_game.board)
     app.run(debug=True, host="0.0.0.0", port=PORT)
