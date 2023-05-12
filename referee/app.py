@@ -87,8 +87,11 @@ def handle_move():
             board_game.game_info["time2"] += time.time() - time_list[1]
             board_game.game_info["turn"] = team1_id_full
             time_list[0] = time.time()
-    
-    board_game.check_status(data["board"])
+    print("Team 1 time: ", time_list[0])
+    print("Team 2 time: ", time_list[1])
+    if data["status"] == None:
+        print("Checking status...")
+        board_game.check_status(data["board"])
     # print("After check status: ",board_game.game_info)
 
     # board_game.convert_board(board_game.game_info["board"])

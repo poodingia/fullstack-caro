@@ -86,7 +86,7 @@ class GameClient:
                         print("Invalid move")
 
             # Kết thúc trò chơi
-            elif data.get("status")!=None:
+            elif data.get("status") != None:
                 print("Game over")
                 break
 

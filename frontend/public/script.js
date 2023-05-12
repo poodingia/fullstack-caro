@@ -94,7 +94,6 @@ function drawBoard() {
         }
         gameBoardHTML += "</tr>";
     }
-    console.log(prevGameBoard)
     prevGameBoard = game.board;
     gameBoardHTML += "</table>";
     gameBoard[0].innerHTML = gameBoardHTML;
@@ -152,8 +151,8 @@ function render() {
         avatarImg2.src = "resources/player2avatar.png";
       }
     document.getElementById("match-id").innerText = `Match ID: ${game.match_id != undefined ? game.match_id : ""}`
-    document.getElementById('player1-time').innerHTML = game.time1 != undefined ? game.time1 : ""
-    document.getElementById('player2-time').innerHTML = game.time2 != undefined ? game.time2 : ""
+    document.getElementById('player1-time').innerHTML = game.time1 != undefined ? game.time1.toFixed(5) : ""
+    document.getElementById('player2-time').innerHTML = game.time2 != undefined ? game.time2.toFixed(5) : ""
     document.getElementById('score1').innerHTML = game.score1 != undefined ? game.score1 : ""
     document.getElementById('score2').innerHTML = game.score2 != undefined ? game.score2 : ""
 
