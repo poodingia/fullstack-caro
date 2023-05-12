@@ -16,6 +16,7 @@ class TicTacToeAI:
                     available_moves.append((i, j))
                     
         # If there are no available moves, return None
+        print(len(available_moves))
         if not available_moves:
             return None
         # Choose a random available move
