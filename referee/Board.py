@@ -30,16 +30,53 @@ class BoardGame:
                 board[i].append(' ')
         return board
 
-    def check_status(self, board):
-        flag = True
-        for i in range(self.size*self.size):
-            if board[i] == " ":
-                flag = False
-
-        if flag:
-            self.status = "Draw"
-            self.game_info["status"] = self.status
     
+    def is_win(self, board):
+        # new_board = self.convert_board(board)
+        new_board = board
+        print("New board: ", new_board)
+        black = self.score_of_col(new_board,'x')
+        white = self.score_of_col(new_board,'o')
+
+        self.sum_sumcol_values(black)
+        self.sum_sumcol_values(white)
+
+        if 5 in black and black[5] == 1:
+            return 'X won'
+        elif 5 in white and white[5] == 1:
+            return 'O won'
+
+        if sum(black.values()) == black[-1] and sum(white.values()) == white[-1] or self.possible_moves(board)==[]:
+            return 'Draw'
+
+        return 'Continue playing'
+
+    def check_status(self, board):
+        win_check = self.is_win(board)
+        if win_check == 'X won' or win_check == 'O won':
+            self.status = win_check
+            self.game_info["status"] = self.status
+            print("Result: " + win_check)
+            return
+        elif win_check == 'Draw':
+            flag = True
+            # Check if there is no free space
+            for i in range(self.size):
+                for j in range(self.size):
+                    if board[i][j] == " ":
+                        flag = False
+
+            if flag:
+                if self.game_info["time1"] < self.game_info["time2"]:
+                    self.status = self.game_info["team1_id"][-1].upper() + " won"
+                elif self.game_info["time1"] > self.game_info["time2"]:
+                    self.status = self.game_info["team2_id"][-1].upper() + " won"
+                self.game_info["status"] = self.status
+                print("Draw and compare time: " + self.status)
+                return
+        # else:
+        #     print("Continue playing")
+
     def make_empty_board(self, sz):
         board = []
         for i in range(sz):
@@ -124,24 +161,6 @@ class BoardGame:
         
         return colscores
 
-    def is_win(self, board):
-        board = self.convert_board()
-        black = self.score_of_col(board,'X')
-        white = self.score_of_col(board,'O')
-
-        self.sum_sumcol_values(black)
-        self.sum_sumcol_values(white)
-
-        if 5 in black and black[5] == 1:
-            return 'X won'
-        elif 5 in white and white[5] == 1:
-            return 'O won'
-
-        if sum(black.values()) == black[-1] and sum(white.values()) == white[-1] or self.possible_moves(board)==[]:
-            return 'Draw'
-
-        return 'Continue playing'
-
     def possible_moves(self, board):  
         '''
         khởi tạo danh sách tọa độ có thể có tại danh giới các nơi đã đánh phạm vi 3 đơn vị
@@ -196,13 +215,17 @@ class BoardGame:
             
         return yf,xf
     
+    '''
+    deprecated
+    '''
     def convert_board(self, board):
         new_board = []
         for i in range(len(board)):
             row = []
             row.append(board[i][0])
             if i%self.size-1 == 0:
-                board.append(row)
+                new_board.append(row)
+        return new_board
         # self.board = board
         # self.game_info["board"] = self.board
     

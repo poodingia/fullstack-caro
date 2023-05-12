@@ -19,21 +19,25 @@ function getJSON() {
         .then(response => game = response)
         .catch(err => console.error(err));
 
+    // let prevMatchId, currentMatchId 
+    // currentMatchId = game.match_id
     if(game.status!= "None" && game.status!=undefined){
         // End the game
+        console.log("Status: " + game.status)
         document.getElementById("status").style.display = "block";
-        document.getElementsByClassName("gameboard")[0].style.display = "none";
+        // document.getElementsByClassName("gameboard")[0].style.display = "none";
         document.getElementById("status").innerText = game.status;
         document.getElementById("confirm-button-container").style.display = "block";
         document.getElementById("confirm-button").addEventListener("click", handleConfirm);
         document.getElementById("roomid-input-container").style.display = "none";
+        // prevMatchId = game.match_id
     }
 
-    else if(game.room_id===roomId && game.room_id !== undefined){
-        drawBoard();
+    if(game.room_id===roomId && game.room_id !== undefined){
+        drawBoard();   
+        render();
     } 
 
-    render();
 }
 
 function handleConfirm() {
@@ -53,6 +57,11 @@ function handleConfirm() {
 function drawBoard() {
     document.getElementsByClassName("gameboard")[0].style.display = "block";
     document.getElementById("roomid-input-container").style.display="none";
+    if (game.status == "None"){
+        document.getElementById("status").style.display = "none";
+        document.getElementById("confirm-button-container").style.display = "none";
+    }
+
     var size = game.size;
     var gameBoard = document.getElementsByClassName("gameboard");
     var gameBoardHTML = "<table cell-spacing = '0'>";

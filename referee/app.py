@@ -1,6 +1,6 @@
 from flask_cors import CORS, cross_origin
 from flask import Flask, request, jsonify, make_response
-from flask_socketio import SocketIO
+# from flask_socketio import SocketIO
 import json
 import time
 from Board import BoardGame
@@ -18,7 +18,7 @@ team1_role = "x"
 team2_role = "o"
 room_id = "123"
 match_id = "321"
-size = 7
+size = 5
 #################
 
 time_list = [time.time()] * 2
@@ -64,9 +64,9 @@ def render_board():
 @app.route('/')
 @cross_origin()
 def fe_render_board():
-    print(board_game.game_info)
+    # print(board_game.game_info)
     response = make_response(jsonify(board_game.game_info))
-    print(board_game.game_info)
+    # print(board_game.game_info)
     return response
 
 
@@ -76,8 +76,8 @@ def handle_move():
     data = request.data
 
     data = json.loads(data.decode('utf-8'))
-    print(f'Board: {board_game.board}')
-    if data["turn"] == board_game.game_info["turn"]:
+    print(f'Board: {data["board"]}')
+    if data["turn"] == board_game.game_info["turn"] and data["status"] == None:
         board_game.game_info.update(data)
         if data["turn"] == team1_id_full:
             board_game.game_info["time1"] += time.time() - time_list[0]
@@ -87,7 +87,9 @@ def handle_move():
             board_game.game_info["time2"] += time.time() - time_list[1]
             board_game.game_info["turn"] = team1_id_full
             time_list[0] = time.time()
-    print(board_game.game_info)
+    
+    board_game.check_status(data["board"])
+    # print("After check status: ",board_game.game_info)
 
     # board_game.convert_board(board_game.game_info["board"])
     
