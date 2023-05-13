@@ -127,13 +127,13 @@ def log_game_info(game_info):
 #     response = make_response(jsonify(board_game.game_info))
 #     return board_game.game_info
 
-# @app.route('/')
-# @cross_origin()
-# def fe_render_board():
-#     print(board_game.game_info)
-#     response = make_response(jsonify(board_game.game_info))
-#     print(board_game.game_info)
-#     return response
+@app.route('/')
+@cross_origin()
+def fe_render_board():
+    print(board_game.game_info)
+    response = make_response(jsonify(board_game.game_info))
+    print(board_game.game_info)
+    return response
 
 
 # @app.route('/move', methods=['POST'])
