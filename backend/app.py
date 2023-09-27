@@ -1,25 +1,21 @@
 import copy
 import json
 import time
-from threading import Thread
-import socket
-
 import requests
+
 from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS, cross_origin
 
-from TicTacToeAi import TicTacToeAI
+from TicTacToeAi import get_move
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 host = 'http://localhost:5000'  # Địa chỉ server trọng tài mặc định
-team_id = 123 # team_id mặc định
+team_id = 123  # team_id mặc định
 game_info = {}  # Thông tin trò chơi để hiển thị trên giao diện
 stop_thread = False  # Biến dùng để dừng thread lắng nghe
-
-ai = TicTacToeAI('X')  # Khởi tạo AI chạy mặc định với đội X
 
 
 # Giao tiếp với trọng tài qua API:
@@ -66,14 +62,14 @@ class GameClient:
                 self.room_id = data.get("room_id")
 
             # Nhận thông tin trò chơi
-            elif data.get("board") and data.get("status")==None:
+            elif data.get("board") and data.get("status") is None:
                 # Nếu là lượt đi của đội của mình thì gửi nước đi             
-                log_game_info(game_info=game_info)
+                log_game_info()
                 if data.get("turn") in self.team_id:
                     self.size = int(data.get("size"))
                     self.board = copy.deepcopy(data.get("board"))
                     # Lấy nước đi từ AI, nước đi là một tuple (i, j)
-                    move = ai.get_move(self.board, self.size)
+                    move = get_move(self.board, self.size)
                     print("Move: ", move)
                     # Kiểm tra nước đi hợp lệ
                     valid_move = self.check_valid_move(move)
@@ -86,7 +82,7 @@ class GameClient:
                         print("Invalid move")
 
             # Kết thúc trò chơi
-            elif data.get("status") != None:
+            elif data.get("status") is not None:
                 print("Game over")
                 break
 
@@ -130,7 +126,8 @@ class GameClient:
             return True
         return False
 
-def log_game_info(game_info):
+
+def log_game_info():
     # Ghi thông tin trò chơi vào file log
     print("Match id: ", game_info["match_id"])
     print("Room id: ", game_info["room_id"])
@@ -165,13 +162,4 @@ if __name__ == "__main__":
     # Khởi tạo game client
     gameClient = GameClient(host, team_id, team_roles)
     gameClient.listen()
-    # game_thread = Thread(target=gameClient.listen)
-    # game_thread.start()
-    # app.run(host="0.0.0.0", port=3005)
-    # try:
-    #     while game_thread.is_alive():
-    #         game_thread.join(1)
-    # except KeyboardInterrupt:
-    #     stop_thread = True
-    #     game_thread.join()
-    #     print("Game client stopped")
+
